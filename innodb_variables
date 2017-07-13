@@ -1,5 +1,5 @@
 
 
-##innodb_rollback_segments##
+**innodb_rollback_segments**
 
 https://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_rollback_segments
