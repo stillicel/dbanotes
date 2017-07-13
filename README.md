@@ -1,0 +1,2 @@
+# mysqlnotes
+MySQL DBA notes
