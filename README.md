@@ -11,5 +11,5 @@
 - MySQL Docs: [5.6](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_undo_tablespaces) [5.7](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_undo_tablespaces)
 - 指定undo tablespace文件的数目.
 - MySQL 5.6开始, Undo tablespace数据可以从system tablespace文件里分出来放入若干单独的文件: undo01, undo02, ... 这些文件的存放位置由变量[innodb_undo_directory](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_undo_directory)指定.
-- innodb_undo_tablespaces一旦设定好, 就不能改了. 因此, 不妨多设置几个. innodb_rollback_segments会平均地分布在各个Undo tablespace文件上.
+- innodb_undo_tablespaces一旦设定好, 就不能改了. 因此, 不妨多设置几个. 多个innodb_rollback_segments会平均地分布在各个Undo tablespace文件上.
 - innodb_undo_tablespaces的默认值为0, 这意味着undo logs存入system tablespace, 而不是放入单独的文件.
