@@ -17,7 +17,7 @@
 #### innodb_purge_threads
 - MySQL Docs: [5.5](https://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_purge_threads) [5.6](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_purge_threads) [5.7](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_purge_threads)
 - 指定专门用于Undo Log Purge操作的后台线程数目. 如果设置为0, 则Undo Log Purge操作交由master thread执行.
-- 不同版本的MySQL对于此参数的实现和默认值有显著差别. 
--- MySQL 5.5: 默认为0, 最大值为1.
--- MySQL 5.6: 最大值改为32; 5.6.5开始最小值为1 (不允许设置为0), 默认值为1.
--- MySQL 5.7: 最大值为32; 默认值为4, 最小值为1.
+- 不同版本的MySQL对于此参数的实现和默认值有显著差别. 总体上倾向于把purge线程独立出来.
+- MySQL 5.5: 默认为0, 最大值为1.
+- MySQL 5.6: 最大值改为32; 5.6.5开始最小值为1 (不允许设置为0), 默认值为1.
+- MySQL 5.7: 最大值为32; 默认值为4, 最小值为1.
