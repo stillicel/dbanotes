@@ -13,3 +13,11 @@
 - MySQL 5.6开始, Undo tablespace数据可以从system tablespace文件里分出来放入若干单独的文件: undo01, undo02, ... 这些文件的存放位置由变量[innodb_undo_directory](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_undo_directory)指定.
 - innodb_undo_tablespaces一旦设定好, 就不能改了. 因此, 不妨多设置几个. 多个innodb_rollback_segments会平均地分布在各个Undo tablespace文件上.
 - innodb_undo_tablespaces的默认值为0, 这意味着undo logs存入system tablespace, 而不是放入单独的文件.
+
+#### innodb_purge_threads
+- MySQL Docs: [5.5](https://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_purge_threads) [5.6](https://dev.mysql.com/doc/refman/5.6/en/innodb-parameters.html#sysvar_innodb_purge_threads) [5.7](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_purge_threads)
+- 指定专门用于Undo Log Purge操作的后台线程数目. 如果设置为0, 则Undo Log Purge操作交由master thread执行.
+- 不同版本的MySQL对于此参数的实现和默认值有显著差别. 
+-- MySQL 5.5: 默认为0, 最大值为1.
+-- MySQL 5.6: 最大值改为32; 5.6.5开始最小值为1 (不允许设置为0), 默认值为1.
+-- MySQL 5.7: 最大值为32; 默认值为4, 最小值为1.
