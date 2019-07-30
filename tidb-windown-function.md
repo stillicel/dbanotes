@@ -1,14 +1,11 @@
 
-
 # TiDB 3.0：窗口函数初体验
 
 SQL:2003是SQL标准的第四个修订版， 该版本引入了若干新特性，其中便包括窗口函数(SQL Window Function)。在Oracle数据库中窗口函数被称作『分析函数』（Analytics Functions）， 其他主流数据库产品也都有各自的实现。MySQL于版本8.0.2（2017年7月发布）开始支持一部分窗口函数语法，TiDB则于[版本3.0](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/window-functions/#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0) (2019年6月发布) 实现了与MySQL兼容的语法支持。
 
 本文尝试在TiDB 3.0上运行一些包含窗口函数调用语法的SQL，实地体验一下TiDB对窗口函数的支持。
 
-<!-- TOC -->autoauto- [TiDB 3.0：窗口函数初体验](#tidb-30窗口函数初体验)auto    - [准备环境 {#准备环境}](#准备环境-准备环境)auto    - [SQL分组操作 {#sql分组操作}](#sql分组操作-sql分组操作)auto    - [窗口函数入门 {#窗口函数入门}](#窗口函数入门-窗口函数入门)auto        - [OVER关键字 {#over关键字}](#over关键字-over关键字)auto        - [何时执行? {#何时执行}](#何时执行-何时执行)auto        - [PARTITION BY子句 {#partition-by子句}](#partition-by子句-partition-by子句)auto        - [ORDER BY和Frame子句 {#order-by和frame子句}](#order-by和frame子句-order-by和frame子句)auto        - [命名窗口 {#命名窗口}](#命名窗口-命名窗口)auto    - [总结 {#总结}](#总结-总结)auto    - [致谢 {#致谢}](#致谢-致谢)autoauto<!-- /TOC -->
-
-## 准备环境 {#准备环境}
+## 准备环境
 
 *   **准备TiDB 3.0环境**。若手边有一套TiDB 3.0环境，则足以运行本文后面列出的所有SQL。建议在非生产环境执行这些SQL，以免影响到线上业务。如果手边没有合适的TiDB 3.0环境，建议在个人电脑上以Docker形式运行Standalone模式的TiDB Server。[这里](https://github.com/pingcap/tidb/blob/master/docs/QUICKSTART.md)列出了具体的做法。
 *   **开启TiDB窗口函数支持**。全局变量`tidb_enable_window_function`须设置为1。在我使用的测试环境里，把TiDB从版本v2.1.x升级到3.0.1之后，该变量虽然默认被置为了1，但仍然无法识别窗口函数语法。 须再次手动设定一下方才生效。具体细节可参考[这里](https://asktug.com/t/tidb-v3-0-1-window-function-sql/297).
@@ -106,7 +103,7 @@ SQL:2003是SQL标准的第四个修订版， 该版本引入了若干新特性�
 如果在你的环境里也能成功执行，并输出相同结果，则证明环境搭建成功。
 
 
-## SQL分组操作 {#sql分组操作}
+## SQL分组操作
 
 什么是『SQL分组操作』（SQL Grouping）？一言以蔽之，凡是使用了GROUP BY的SELECT语句都在执行SQL分组操作。那么，它和窗口函数有什么关系呢？分组是窗口函数的基础。我们也可以这么说，『**窗口函数是更为高级的SQL分组操作**』。 
 
@@ -256,7 +253,7 @@ SQL分组操作有几个要点：
 
 
 
-## 窗口函数入门 {#窗口函数入门}
+## 窗口函数入门
 
 现在，不妨再回头看一遍”[准备环境](#准备环境)”一节我们执行过的那个SQL，请注意这一行：
 
@@ -271,7 +268,7 @@ count(*) over(partition by DEPTNO) as dept_cnt
 我们关于窗口函数基本语法的介绍就从这一行代码展开。
 
 
-### OVER关键字 {#over关键字}
+### OVER关键字
 
 当COUNT函数后面跟着OVER关键字，行为就发生变化了：TiDB会把它当做窗口函数，而不是聚合函数。我们熟悉的那些聚合函数几乎都可以后接OVER关键字，从而摇身一变成为窗口函数。 
 
@@ -309,7 +306,7 @@ TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function）
 
 
 
-### 何时执行? {#何时执行}
+### 何时执行?
 
 基本上，窗口函数代码的执行会被放在一个SELECT语句执行过程的最后面，但会早于ORDER BY和LIMIT等决定最终结果集展示的部分。因此，在一个SELECT语句里，原始数据集经过FROM、JOIN、WHERE和GROUP BY过滤后才会传递给窗口函数做进一步的计算处理。
 
@@ -356,7 +353,7 @@ TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function）
 
 
 
-### PARTITION BY子句 {#partition-by子句}
+### PARTITION BY子句
 
 PARTITION BY子句本质上等同于GROUP BY，它做的事情其实就是『**分组**』。在讲述窗口函数用法的书籍和文档中，『分组』和『分区』可以视为同义词；一个分组（分区）也可以被称作一个『窗口』，而操作这个『窗口』的函数就被称作『窗口函数』。『窗口函数』是SQL标准里规定的叫法，Oracle中叫分析函数，DB2则称之为OLAP函数。
 
@@ -631,7 +628,7 @@ tidb>select DEPTNO,
 
 
 
-### 命名窗口 {#命名窗口}
+### 命名窗口
 
 [命名窗口](https://dev.mysql.com/doc/refman/8.0/en/window-functions-named-windows.html)（Named Window）其实是一种语法糖，用于简化窗口函数代码的写法。我们先来看一个例子:
 
@@ -701,7 +698,7 @@ tidb>select DEPTNO,
 
 
 
-## 总结 {#总结}
+## 总结
 
 我们在TiDB 3.0上运行了一些窗口函数SQL，主要涉及如下语法元素：
 
@@ -718,9 +715,6 @@ TiDB 3.0实现了和MySQL 8.0相兼容的窗口函数语法，这有助于程序
 囿于篇幅，本文没有对具体的窗口函数用法做更多展开。例如，RANK、LEAD和 LAST_VALUE等非聚合窗口函数其实有着更加细微有趣且变化繁多的使用技巧，从事报表和数据分析任务的程序员若能熟练掌握则可事半功倍。
 
 
-## 致谢 {#致谢}
+## 致谢
 
 本文多处SQL代码示例出自《SQL经典实例》一书的附录A 『窗口函数简介』，行文思路也多有借鉴。该书的附录A用了二十多页篇幅对窗口函数的基本概念和用法做了言简意赅的介绍。从个人经验而言，这篇附录大概算得上关于窗口函数最为精炼的入门材料了。读者若有兴趣，不妨移步该书[官方主页](http://www.ituring.com.cn/book/1691)下载附录A的内容。感谢图灵社免费开放了该章节的下载。
-
-
-<!-- Docs to Markdown version 1.0β17 -->
