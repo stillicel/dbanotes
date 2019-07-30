@@ -6,7 +6,7 @@ SQL:2003是SQL标准的第四个修订版， 该版本引入了若干新特性�
 
 本文尝试在TiDB 3.0上运行一些包含窗口函数调用语法的SQL，实地体验一下TiDB对窗口函数的支持。
 
-[TOC]
+<!-- TOC -->autoauto- [TiDB 3.0：窗口函数初体验](#tidb-30窗口函数初体验)auto    - [准备环境 {#准备环境}](#准备环境-准备环境)auto    - [SQL分组操作 {#sql分组操作}](#sql分组操作-sql分组操作)auto    - [窗口函数入门 {#窗口函数入门}](#窗口函数入门-窗口函数入门)auto        - [OVER关键字 {#over关键字}](#over关键字-over关键字)auto        - [何时执行? {#何时执行}](#何时执行-何时执行)auto        - [PARTITION BY子句 {#partition-by子句}](#partition-by子句-partition-by子句)auto        - [ORDER BY和Frame子句 {#order-by和frame子句}](#order-by和frame子句-order-by和frame子句)auto        - [命名窗口 {#命名窗口}](#命名窗口-命名窗口)auto    - [总结 {#总结}](#总结-总结)auto    - [致谢 {#致谢}](#致谢-致谢)autoauto<!-- /TOC -->
 
 ## 准备环境 {#准备环境}
 
