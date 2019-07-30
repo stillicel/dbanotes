@@ -126,7 +126,7 @@ SQL:2003是SQL标准的第四个修订版， 该版本引入了若干新特性�
 ```
 
 
-上述SQL按照部门编号（`DEPTNO`）把EMP表的数据记录分成了三组（使用GROUP BY分组，结果如下所示，分组以红黄蓝三色标出），分别计算每个分组包含多少行记录（调用聚合函数COUNT(*)），最后筛选出记录行数超过3的分组（使用HAVING关键字）。
+上述SQL按照部门编号（`DEPTNO`）把EMP表的数据记录分成了三组（使用GROUP BY分组，结果如下所示），分别计算每个分组包含多少行记录（调用聚合函数COUNT(*)），最后筛选出记录行数超过3的分组（使用HAVING关键字）。
 
 
 ```
@@ -171,7 +171,7 @@ SQL分组操作有几个要点：
     ```
 
 
-*   **聚合函数一定要和GROUP BY一起出现吗？未必。**上面的SQL使用到了COUNT和AVG函数，却没有出现GROUP BY。我们不难猜到，COUNT和AVG函数把EMP表里的全部记录当做一个『大分组』来处理了。在如下所示的SQL里，COUNT函数则把所有匹配`JOB = 'CLERK'`的记录行归到了一个分组。这个例子说明, WHERE条件会影响窗口函数的运算结果。
+*   **聚合函数一定要和GROUP BY一起出现吗？未必。** 上面的SQL使用到了COUNT和AVG函数，却没有出现GROUP BY。我们不难猜到，COUNT和AVG函数把EMP表里的全部记录当做一个『大分组』来处理了。在如下所示的SQL里，COUNT函数则把所有匹配`JOB = 'CLERK'`的记录行归到了一个分组。这个例子说明, WHERE条件会影响窗口函数的运算结果。
 
     ```
     tidb>select count(*)
@@ -186,7 +186,7 @@ SQL分组操作有几个要点：
     ```
 
 
-*   **可以只出现GROUP BY，而不调用聚合函数吗？当然可以。**下面第一个SQL筛选出`JOB = 'CLERK'`的记录，并按照部门编号分组， 最后提取出部门编号。从查询结果不难看出，GROUP BY会自动去重。这和DISTINCT查询（下面第二个SQL）效果一致。因此，有了GROUP BY就不需要使用DISTINCT去重。
+*   **可以只出现GROUP BY，而不调用聚合函数吗？当然可以。** 下面第一个SQL筛选出`JOB = 'CLERK'`的记录，并按照部门编号分组， 最后提取出部门编号。从查询结果不难看出，GROUP BY会自动去重。这和DISTINCT查询（下面第二个SQL）效果一致。因此，有了GROUP BY就不需要使用DISTINCT去重。
 
     ```
     tidb>select DEPTNO
@@ -255,7 +255,7 @@ SQL分组操作有几个要点：
 
 ## 窗口函数入门
 
-现在，不妨再回头看一遍”[准备环境](#准备环境)”一节我们执行过的那个SQL，请注意这一行：
+现在，不妨再回头看一遍『[准备环境](#准备环境)』一节我们执行过的那个SQL，请注意这一行：
 
  
 
@@ -272,7 +272,7 @@ count(*) over(partition by DEPTNO) as dept_cnt
 
 当COUNT函数后面跟着OVER关键字，行为就发生变化了：TiDB会把它当做窗口函数，而不是聚合函数。我们熟悉的那些聚合函数几乎都可以后接OVER关键字，从而摇身一变成为窗口函数。 
 
-TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function），**比如ROW_NUMBER、RANK、LAG和LEAD。可以在[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/window-functions/)找到TiDB支持的非聚合窗口函数列表。这里，我们来看一个非聚合窗口函数的例子。下列SQL调用ROW_NUMBER函数为员工自动编号：左数第一列是整个公司范围内的流水号，第二列则是部门内的流水号。这个SQL表明，ROW_NUMBER会根据不同的数据窗口生成不同的流水号。
+TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function）**，比如ROW_NUMBER、RANK、LAG和LEAD。可以在[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/window-functions/)找到TiDB支持的非聚合窗口函数列表。这里，我们来看一个非聚合窗口函数的例子。下列SQL调用ROW_NUMBER函数为员工自动编号：左数第一列是整个公司范围内的流水号，第二列则是部门内的流水号。这个SQL表明，ROW_NUMBER会根据不同的数据窗口生成不同的流水号。
 
 
 ```
@@ -335,7 +335,7 @@ TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function）
 
   
 
-最后不妨这样来总结一下：对于下面SQL，通常的执行顺序会是`FROM → JOIN → WHERE → GROUP BY → `窗口函数调用处理` → ORDER BY → LIMIT，`窗口函数调用通常会被作为最后的部分来处理。
+最后不妨这样来总结一下：对于下面SQL，通常的执行顺序会是`FROM → JOIN → WHERE → GROUP BY → 窗口函数调用处理 → ORDER BY → LIMIT`，窗口函数调用通常会被作为最后的部分来处理。
 
 
 ```
@@ -357,11 +357,11 @@ TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function）
 
 PARTITION BY子句本质上等同于GROUP BY，它做的事情其实就是『**分组**』。在讲述窗口函数用法的书籍和文档中，『分组』和『分区』可以视为同义词；一个分组（分区）也可以被称作一个『窗口』，而操作这个『窗口』的函数就被称作『窗口函数』。『窗口函数』是SQL标准里规定的叫法，Oracle中叫分析函数，DB2则称之为OLAP函数。
 
-`上述count(*) over(partition by DEPTNO)`的语义是先按照DEPTNO字段把记录集分组，然后计算每一组的记录行数。当然，OVER后面的括号里也可以空着什么都不填：`count(*) over()`，这时整个记录集会被当做一个『大分组』来对待。
+上述`count(*) over(partition by DEPTNO)`的语义是先按照DEPTNO字段把记录集分组，然后计算每一组的记录行数。当然，OVER后面的括号里也可以空着什么都不填：`count(*) over()`，这时整个记录集会被当做一个『大分组』来对待。
 
 在一个SQL语句里，PARTITION BY子句可以出现多次，并且每次用于分组的字段也可以不同。这样就做到了GROUP BY无法达成的事情：在一个SELECT语句里，以多种维度把数据分组并做不同的聚合计算处理； 并且，SELECT后面可以出现任意列，不仅限于那些用于分组的列。
 
-我们来看下面这个SQL，它先按照DEPTNO字段分组，计算每个员工所在部门的人员总数；接着按照JOB字段再次分组，计算每个员工的职位（JOB）在整个公司内出现的次数。
+我们来看下面这个SQL，它先按照DEPTNO字段分组，计算每个员工所在部门的人员总数；接着按照JOB字段再次分组，计算每个员工的职位（`JOB`）在整个公司内出现的次数。
 
 
 ```
@@ -398,7 +398,7 @@ tidb>select ENAME,
 
 
 
-*   关联子查询方案：SQL如下所示。该SQL在执行代价上应该会大挺多。窗口函数方案只需要把EMP表从磁盘载入内存一次，而 （不考虑SQL自动优化和重写的话）关联子查询方案每一行结果集产生的过程中都要额外把EMP表的数据多加载两次。
+*   **关联子查询方案**：SQL如下所示。该SQL在执行代价上应该会大挺多。窗口函数方案只需要把EMP表从磁盘载入内存一次，而 （不考虑SQL自动优化和重写的话）关联子查询方案每一行结果集产生的过程中都要额外把EMP表的数据多加载两次。
 
     ```
     tidb>select ENAME,
@@ -430,7 +430,7 @@ tidb>select ENAME,
     ```
 
 
-*   多表关联方案：SQL如下所示。使用JOIN可以避免在每一行结果集计算的过程中额外加载两次数据，但仍然需要关联两个子查询，略显复杂。
+*   **多表关联方案**：SQL如下所示。使用JOIN可以避免在每一行结果集计算的过程中额外加载两次数据，但仍然需要关联两个子查询，略显复杂。
 
     ```
     tidb>select t.ENAME,
@@ -499,14 +499,14 @@ PARTITION BY子句对于NULL的处理方式，和GROUP BY有异曲同工之处�
 
 `count(*) over(partition by COMM) as cnt1`仍然针对COUNT(*)做了特殊化处理，把符合`COMM IS NULL`条件的记录行都划归进一组，因此结果集的前十行`cnt1 = 10`。
 
-`count(COMM) over(partition by COMM) as cnt2` 则视NULL为无物，前十行cnt2都是0。
+`count(COMM) over(partition by COMM) as cnt2` 则视NULL为无物，前十行`cnt2`都是0。
 
 NULL是易燃易爆品，每一个使用SQL编程的程序员都应该警惕这个坑，务必小心在意，徐徐绕行；每一个DBA在做SQL审核的时候都要时刻提着一把锤子，把一根名为`NOT NULL`的铁钉尽可能钉在每个字段定义的后面。
 
 现在, 不妨回头再看一遍『[SQL分组操作](#sql分组操作)』一节着重提过的几个要点，是不是对『**窗口函数是更为高级的SQL分组操作**』这句话多了点一手体验？其实，窗口函数可以做到更多。
 
 
-### ORDER BY和Frame子句 {#order-by和frame子句}
+### ORDER BY和Frame子句
 
 在OVER子句里可以嵌入ORDER BY，从而实现一种『滚动累加』（Running Total）效果。我们先来看一个SQL：
 
@@ -543,7 +543,7 @@ NULL是易燃易爆品，每一个使用SQL编程的程序员都应该警惕这�
 
 
 
-![alt_text](images/TiDB-30.png "image_tooltip")
+![alt_text](https://github.com/stillicel/mysqlnotes/raw/master/frame.png "image_tooltip")
 
 
 我们可以描述一下`sum(SAL) over(order by HIREDATE) as running_total`的处理过程：先按照HIREDATE字段排序，然后针对每一行数据算出来『从第一行到当前行SAL的加和』。换句话说，每一行计算结果的产生过程都是这样的：先确定一个『滑动的数据窗口』，第一次仅包含第一行数据，第二次包含前两行，第三次则是前三行；然后针对该数据窗口计算SUM(SAL)。
@@ -581,7 +581,7 @@ NULL是易燃易爆品，每一个使用SQL编程的程序员都应该警惕这�
 ```
 
 
-跟随在OVER关键字后面的ORDER BY配合RANGE BETWEEN语法（或者另一种ROW BETWEEN语法）被称作**[Frame子句](https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html)**。它的作用是在窗口函数执行过程中临时确定一个滑动的数据窗口，并在此窗口之上施行运算（使用聚合窗口函数或者非聚合窗口函数）。简单来讲，Frame子句会决定两件事：
+跟随在OVER关键字后面的ORDER BY配合RANGE BETWEEN语法（或者另一种ROW BETWEEN语法）被称作 **[Frame子句](https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html)**。它的作用是在窗口函数执行过程中临时确定一个滑动的数据窗口，并在此窗口之上施行运算（使用聚合窗口函数或者非聚合窗口函数）。简单来讲，Frame子句会决定两件事：
 
 
 
