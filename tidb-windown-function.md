@@ -230,7 +230,7 @@ SQL分组操作有几个要点：
     ```
 
 
-*   **建议开启SQL模式选项[ONLY_FULL_GROUP_BY](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/aggregate-group-by-functions/#%E5%AF%B9-sql-%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%94%AF%E6%8C%81)**。开启了ONLY_FULL_GROUP_BY之后，在含有GROUP BY的SELECT语句里, SELECT后面不能出现非聚合列。如下所示，sql_mode变量里不含ONLY_FULL_GROUP_BY选项时，TiDB允许一条不规范的GROUP BY语句成功执行（须注意, 此时查询结果里的JOB值可能与你的预期不符）；加入了ONLY_FULL_GROUP_BY选项后，则TiDB会直接报错。
+*   **建议开启SQL模式选项[ONLY_FULL_GROUP_BY](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/aggregate-group-by-functions/#%E5%AF%B9-sql-%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%94%AF%E6%8C%81)**。开启了ONLY_FULL_GROUP_BY之后，在含有GROUP BY的SELECT语句里, SELECT后面不能出现非聚合列。如下所示，sql_mode变量里不含ONLY_FULL_GROUP_BY选项时，TiDB允许一条不规范的GROUP BY语句成功执行（须注意, 此时查询结果里的JOB值可能与你的预期不符）；加入了`ONLY_FULL_GROUP_BY`选项后，则TiDB会直接报错。
 
     ```
     tidb>show variables like '%sql_mode%';
@@ -284,7 +284,7 @@ count(*) over(partition by DEPTNO) as dept_cnt
 
 当COUNT函数后面跟着OVER关键字，行为就发生变化了：TiDB会把它当做窗口函数，而不是聚合函数。我们熟悉的那些聚合函数几乎都可以后接OVER关键字，从而摇身一变成为窗口函数。 
 
-TiDB还提供了一些**非聚合窗口函数（Non-aggregate Window Function）**，比如ROW_NUMBER、RANK、LAG和LEAD。可以在[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/window-functions/)找到TiDB支持的非聚合窗口函数列表。这里，我们来看一个非聚合窗口函数的例子。下列SQL调用ROW_NUMBER函数为员工自动编号：左数第一列是整个公司范围内的流水号，第二列则是部门内的流水号。这个SQL表明，ROW_NUMBER会根据不同的数据窗口生成不同的流水号。
+TiDB还提供了一些**非聚合窗口函数**（Non-aggregate Window Function），比如`ROW_NUMBER`、`RANK`、`LAG`和`LEAD`。可以在[这里](https://pingcap.com/docs-cn/v3.0/reference/sql/functions-and-operators/window-functions/)找到TiDB支持的非聚合窗口函数列表。这里，我们来看一个非聚合窗口函数的例子。下列SQL调用`ROW_NUMBER`函数为员工自动编号：左数第一列是整个公司范围内的流水号，第二列则是部门内的流水号。这个SQL表明，ROW_NUMBER会根据不同的数据窗口生成不同的流水号。
 
 
 ```
@@ -593,11 +593,11 @@ NULL是易燃易爆品，每一个使用SQL编程的程序员都应该警惕这�
 ```
 
 
-跟随在OVER关键字后面的ORDER BY配合RANGE BETWEEN语法（或者另一种ROW BETWEEN语法）被称作 **[Frame子句](https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html)**。它的作用是在窗口函数执行过程中临时确定一个滑动的数据窗口，并在此窗口之上施行运算（使用聚合窗口函数或者非聚合窗口函数）。简单来讲，Frame子句会决定两件事：
+跟随在OVER关键字后面的`ORDER BY`配合`RANGE BETWEEN`语法（或者另一种`ROW BETWEEN`语法）被称作 **[Frame子句](https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html)**。它的作用是在窗口函数执行过程中临时确定一个滑动的数据窗口，并在此窗口之上施行运算（使用聚合窗口函数或者非聚合窗口函数）。简单来讲，Frame子句会决定两件事：
 
 
 
-*   在滑动的数据窗口形成之前，决定数据如何排序。`ORDER BY HIREDATE`即是把数据按照HIREDATE字段升序排列（默认ASC方式）。
+*   在滑动的数据窗口形成之前，决定数据如何排序。`ORDER BY HIREDATE`即是把数据按照HIREDATE字段升序排列（默认排序方式为`ASC`）。
 *   在每一次运算过程中，确定当前数据窗口的起止边界。`RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`的意思是『从最上面的一行到当前行(包括当前行)』。TiDB提供了[一些表达式和关键字](https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html)帮助我们灵活指定窗口范围：
     *   `UNBOUNDED PRECEDING`：最上面一行
     *   `UNBOUNDED FOLLOWING`：最下面一行
@@ -716,7 +716,7 @@ tidb>select DEPTNO,
 
 
 
-*   窗口函数, 包括聚合窗口函数（如COUNT和SUM）和非聚合窗口函数（如ROW_NUMBER和RANK）
+*   窗口函数, 包括聚合窗口函数（如`COUNT`和`SUM`）和非聚合窗口函数（如`ROW_NUMBER`和`RANK`）
 *   OVER子句
 *   PARTITION BY子句
 *   ORDER BY子句和Frame子句，包括RANGE BETWEEN和ROWS BETWEEN语法
@@ -724,7 +724,7 @@ tidb>select DEPTNO,
 
 TiDB 3.0实现了和MySQL 8.0相兼容的窗口函数语法，这有助于程序员写出更加现代化的SQL代码（相比于SQL92标准）。有了窗口函数，我们有望在不包含子查询的单一SELECT语句里轻松实现多维度分组操作，在返回结果中也能做到同时呈现明细列和聚合计算结果列。这些都是传统GROUP BY语法无法胜任的。除此之外，在执行代价和性能层面，窗口函数相较于传统做法无疑有着更大的优势。
 
-囿于篇幅，本文没有对具体的窗口函数用法做更多展开。例如，RANK、LEAD和 LAST_VALUE等非聚合窗口函数其实有着更加细微有趣且变化繁多的使用技巧，从事报表和数据分析任务的程序员若能熟练掌握则可事半功倍。
+囿于篇幅，本文没有对具体的窗口函数用法做更多展开。例如，`RANK`、`LEAD`和`LAST_VALUE`等非聚合窗口函数其实有着更加细微有趣且变化繁多的使用技巧，从事报表和数据分析任务的程序员若能熟练掌握则可事半功倍。
 
 
 ## 致谢
