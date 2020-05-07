@@ -14,3 +14,5 @@
   - [英文版](https://pingcap.com/success-stories/tidb-in-shopee/)
 - **SQL Cookbook 中文版**
   - 几年前翻译的一本书. 官网在[这里](https://www.ituring.com.cn/book/1691)
+  - [译者感言](http://liuchunhui.blogspot.com/2019/01/2019-01-06sql-cookbook.html)
+  - [一些说明](http://liuchunhui.blogspot.com/2019/01/sql-cookbook.html)
