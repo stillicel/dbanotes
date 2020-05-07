@@ -1,7 +1,8 @@
 
-- **TiDB 3.0：窗口函数初体验** 
-  - [AskTUG](https://asktug.com/t/topic/348) 
-  - [Github](https://github.com/stillicel/mysqlnotes/blob/master/tidb-windown-function.md)
+- **TiDB In Action**
+  - 第一本 TiDB 书籍, 以开源方式写就. 我参与了部分章节的协作和审校.
+  - [Github Repo](https://github.com/pingcap-incubator/tidb-in-action)
+  - [Gitbook](https://book.tidb.io/)
 - **Shopee的数据库选型思路** 
   - [中文版@InfoQ网站](https://www.infoq.cn/article/F6AUgLRICGfGExd73EEl)
   - [中文版@微信公众号 PingCAP](https://mp.weixin.qq.com/s/m6jD0oB0sIHpH1z2gc3pew)
@@ -9,6 +10,9 @@
   - [中文版@微信公众号 InfoQ](https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2651023609&idx=1&sn=b11a1b91f9ce3207ca3edc3e06814546&chksm=bdbe90aa8ac919bc46cc6e58001086fa05f7ebd5c21505daa1a8c0af97f61515a9126a7c47d8&scene=27#wechat_redirect)
   - [英文版@PingCAP Blog](https://pingcap.com/success-stories/choosing-right-database-for-your-applications/)
   - [英文版@DZone](https://dzone.com/articles/choosing-the-right-database-for-your-applications)
+- **TiDB 3.0：窗口函数初体验** 
+  - [AskTUG](https://asktug.com/t/topic/348) 
+  - [Github](https://github.com/stillicel/mysqlnotes/blob/master/tidb-windown-function.md)
 - **TiDB in Shopee**
   - [中文版](https://zhuanlan.zhihu.com/p/53257583)
   - [英文版](https://pingcap.com/success-stories/tidb-in-shopee/)
