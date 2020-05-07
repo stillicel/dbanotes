@@ -1,5 +1,4 @@
 
-##### 几篇 TiDB 相关的文章
 - **TiDB 3.0：窗口函数初体验** 
   - [AskTUG](https://asktug.com/t/topic/348) 
   - [Github](https://github.com/stillicel/mysqlnotes/blob/master/tidb-windown-function.md)
@@ -10,3 +9,8 @@
   - [中文版@微信公众号 InfoQ](https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2651023609&idx=1&sn=b11a1b91f9ce3207ca3edc3e06814546&chksm=bdbe90aa8ac919bc46cc6e58001086fa05f7ebd5c21505daa1a8c0af97f61515a9126a7c47d8&scene=27#wechat_redirect)
   - [英文版@PingCAP Blog](https://pingcap.com/success-stories/choosing-right-database-for-your-applications/)
   - [英文版@DZone](https://dzone.com/articles/choosing-the-right-database-for-your-applications)
+- **TiDB in Shopee**
+  - [中文版](https://zhuanlan.zhihu.com/p/53257583)
+  - [英文版](https://pingcap.com/success-stories/tidb-in-shopee/)
+- **SQL Cookbook 中文版**
+  - 几年前翻译的一本书. 官网在[这里](https://www.ituring.com.cn/book/1691)
