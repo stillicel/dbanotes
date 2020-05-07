@@ -1,6 +1,6 @@
 
 - **TiDB In Action**
-  - 第一本 TiDB 书籍, 以开源方式写就. 我参与了部分章节的协作和审校.
+  - 第一本 TiDB 书籍, 以开源方式写就. 我参与了少量章节的写作和审校.
   - [Github Repo](https://github.com/pingcap-incubator/tidb-in-action)
   - [Gitbook](https://book.tidb.io/)
 - **Shopee的数据库选型思路** 
